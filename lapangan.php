@@ -1,35 +1,46 @@
 <?php 
   include 'layout/header.php';
   $data = select("SELECT * FROM tb_lapangan ORDER BY kode_lapangan DESC");
+
+  if(isset($_POST['add'])){
+    if(createLapangan($_POST) > 0){
+      echo "<script>alert('Data Berhasil Disimpan.'); document.location.href='lapangan.php'; </script>";
+    }else{
+      echo "<script>alert('Data Gagal Untuk Disimpan.'); document.location.href='lapangan.php'; </script>";
+    }
+  }
 ?>
   <div class="p-4 mt-4">
     <div class="d-flex justify-content-between">
       <div class="col-8">
-        <h2 class="text-secondary">Menu Lapangan</h2>
-        <form>
+        <h2 class="text-dark">Menu Lapangan</h2>
+        <form action="" method="POST" enctype="multipart/form-data">
           <div class="mb-3">
-            <label for="nomor_lapangan" class="form-label text-secondary text-opacity-75">Nomor Lapangan</label>
+            <label for="nomor_lapangan" class="form-label text-dark">Nomor Lapangan</label>
             <input type="number" class="form-control" id="nomor_lapangan" name="nomor_lapangan" placeholder="Input Nomor Lapangan" required>
           </div>
           <div class="mb-3">
-            <label for="gambar" class="form-label text-secondary text-opacity-75">Gambar</label>
-            <input type="image" class="form-control" id="gambar" name="gambar" required>
+            <label for="gambar" class="form-label text-dark">Gambar</label>
+            <input type="file" class="form-control" id="gambar" name="gambar" required>
           </div>
-          <label for="deskripsi" class="form-label text-secondary text-opacity-75">Deskripsi</label>
-          <div class="form-floating">
-            <textarea class="form-control" placeholder="Leave a comment here" id="deskripsi" name="deskripsi"></textarea>
-            <label for="floatingTextarea">Deskripsi</label>
+          <div class="mb-3">
+            <label for="deskripsi" class="form-label text-dark">Deskripsi</label>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="deskripsi" name="deskripsi" required></textarea>
+              <label for="deskripsi">Deskripsi</label>
+            </div>
           </div>
-          <button type="submit" class="btn btn-info text-white mt-3">Submit</button>
+          <button type="submit" class="btn btn-success bg-opacity-75 text-white" name="add" onClick="return confirm('Apakah data yang anda masukkan sudah sesuai?');">Tambah</button>
         </form>
-        <table class="table table-bordered mt-4">
-          <thead>
+        <table class="table table-bordered border-secondary mt-4">
+          <thead class="bg-success bg-opacity-75 text-white">
             <tr>
               <th scope="col">No</th>
               <th scope="col">Kode Lapangan</th>
               <th scope="col">Nomor Lapangan</th>
               <th scope="col">Gambar</th>
               <th scope="col">Deskripsi</th>
+              <th scope="col">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -38,9 +49,13 @@
             <tr>
               <th scope="row"><?= $no++; ?></th>
               <th scope="row"><?= $lapangan['kode_lapangan']; ?></th>
-              <th scope="row"><?= $lapangan['no_lapangan']; ?></th>
-              <th scope="row"><?= $lapangan['gambar']; ?></th>
-              <th scope="row"><?= $lapangan['deskripsi']; ?></th>
+              <th scope="row"><?= $lapangan['nomor_lapangan']; ?></th>
+              <th scope="row"><img src="assets/image/<?php echo $lapangan['gambar']; ?>" width='100px' height='100px'/></th>
+              <th scope="row"><?php echo substr($lapangan['deskripsi'], 0, 20); ?>...</th>
+              <th scope="row" class="d-flex flex-row">
+                <a href="update-lapangan.php?kode_lapangan=<?= $lapangan['kode_lapangan']; ?>" class="btn btn-secondary"  onClick="return confirm('Apakah anda yakin data lapangan ini diubah?');">Ubah</a>&nbsp;
+                <a href="delete-lapangan.php?kode_lapangan=<?= $lapangan['kode_lapangan']; ?>" class="btn btn-danger" onClick="return confirm('Apakah anda yakin data lapangan ini dihapus?');">Hapus</a>
+              </th>
             </tr>
             <?php endforeach; ?>
           </tbody>

@@ -6,7 +6,7 @@
   $jam = select("SELECT * FROM tb_jam ORDER BY kode_jam DESC")[0];
 
   if(isset($_POST['update'])){
-    if(update($_POST) > 0){
+    if(updateJam($_POST) > 0){
       echo "<script>alert('Data Berhasil Diubah.'); document.location.href='jam.php'; </script>";
     }else{
       echo "<script>alert('Data Gagal Untuk Diubah.'); document.location.href='jam.php'; </script>";
@@ -25,7 +25,7 @@
           <input type="hidden" class="form-control" id="kode_jam" name="kode_jam" value=<?= $jam['kode_jam']; ?> placeholder="Input Kode Jam" required readonly>
           <div class="mb-3">
             <label for="jam" class="form-label text-secondary text-opacity-75">Jam</label>
-            <input type="time" class="form-control" id="jam" name="jam" value=<?= $jam['jam']; ?>>
+            <input type="time" class="form-control" id="jam" name="jam" value=<?= $jam['jam']; ?> required>
           </div>
           <button type="submit" class="btn btn-warning text-white" name="update" onClick="return confirm('Apakah data yang anda ubah sudah sesuai?');">Ubah</button>
           <button type="submit" class="btn btn-danger text-white" name="cancel" onClick="return confirm('Apakah anda yakin ingin membatalkan nya?');">Batal</button>
